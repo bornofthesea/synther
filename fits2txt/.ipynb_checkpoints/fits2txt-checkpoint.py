@@ -160,7 +160,7 @@ sk = hdu[4].data[0]
 vhelio = hdu[0].header['VHELIO']
 star = hdu[0].header['OBJID']
 
-#new_wv, new_fl = corrv(wavelengths,flux_data,vhelio)
+new_wv, new_fl = corrv(wavelengths,flux_data,vhelio)
 
 
 #------------------- plotting ------------------------
@@ -170,8 +170,8 @@ fig, axs = plt.subplots(1, 2, figsize=(15, 5), sharey=True)
 # Remove horizontal space between axes
 fig.subplots_adjust(wspace=0.1)
 
-axs[0].plot(wavelengths, flux_data, color='black', linewidth=0.5, label = star)
-#axs[0].plot(new_wv, new_fl, color='k')
+axs[0].plot(wavelengths, flux_data, color='gray', linewidth=0.5, label = star)
+axs[0].plot(new_wv, new_fl, color='k')
 #axs[0].plot(wavelengths, tel*np.median(flux_data), color='red',alpha=0.5)
 #axs[0].plot(wavelengths, sk/np.median(sk), color='blue',alpha=0.5)
 
@@ -189,7 +189,7 @@ axs[0].grid()
 axs[1].title.set_text("Cut")
 
 axs[1].plot(wavelengths, flux_data, color='black', linewidth=0.5, label = star)
-#axs[1].plot(new_wv, new_fl, color='k',label = 'corrected')
+axs[1].plot(new_wv, new_fl, color='k',label = 'corrected')
 
 
 axs[1].tick_params(which="both", bottom=True, top=True, left=True, right=True, direction='in')
@@ -213,7 +213,7 @@ print(name_out)
 
 with open('save-spec/'+name_out[:-4]+'.txt', 'w') as f:
     writer = csv.writer(f)
-    writer.writerows(zip(wavelengths, flux_data))
+    writer.writerows(zip(new_wv, new_fl))
 
 #---------------------------------------------------
 

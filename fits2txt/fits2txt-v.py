@@ -105,12 +105,14 @@ v=1
 
 while v <= visits:
     
-    #fix it
+    ext_v = math.ceil(ext/2) #fix it
+    '''
     if visits == 1:
         ext_v = 0 # Previous math.ceil(ext/2). Changed to 0 to use the combined spectra with pixel-based weighting since it looks like there are several spectra  that are broken with the global weights
     else:
         ext_v = v + 1 # Taking the spectra of each visit, after the combined 2 firsts.
-
+    '''
+    
     flux_data=t[ext_v]
     
     if flux_data is not None:
