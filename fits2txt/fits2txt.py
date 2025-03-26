@@ -23,10 +23,60 @@ import math
 import os
 from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
 
+
+
 sns.set_style("white")
 sns.set_context("paper", font_scale=1.5, rc={"lines.linewidth": 1.5})
 
-#---------------      
+#---------------
+
+
+def update_fits_key(file_path, key, new_value):
+    
+    
+    # Open the FITS file in update mode
+    with fits.open(file_path, mode='update') as hdul:
+        
+        # Access the primary header (usually the first header in the HDU list)
+        hdr = hdul[0].header
+        
+        #printing all the keys in the header
+        keys = list(hdr.keys())
+        print(keys)
+        
+        # Print the current value of the specified key
+        print(f"Current value of '{key}': {hdr.get(key, 'Key not found')}")
+        
+        # Update the value of the specified key
+        hdr[key] = new_value
+        
+        # Save changes to the FITS file
+        hdul.flush()
+        
+        # Print the updated value to confirm the change
+        print(f"Updated value of '{key}': {hdr[key]}")
+        
+        
+def read_vhelio_corr(file_path):
+    
+    
+    # Open the FITS file in update mode
+    with fits.open(file_path, mode='update') as hdul:
+        
+        # Access the primary header (usually the first header in the HDU list)
+        hdr = hdul[0].header
+        
+        star = hdr['OBJID']
+        
+        key = 'VHELIO'
+        
+        vhelio_corr = hdr['VHELIO']
+        
+        # Print the current value of the specified key
+        print(f"The '{key}': {vhelio_corr}")
+        print("For the star :"+str(star))
+        
+        return star, vhelio_corr
              
 def rv(centre,centre2):
      dwl=centre-centre2
@@ -77,11 +127,10 @@ except:
 
 #---------------
 
-#openning fits
+#opening fits
 hdu = pyfits.open(file_path)
-#hdu.info
 
-lenn=hdu[0].header['NWAVE']
+lenn = hdu[0].header['NWAVE']
 
 wavelengths = np.linspace(hdu[1].header['CRVAL1'],hdu[1].header['CRVAL1']+lenn*hdu[1].header['CDELT1'], num=lenn)
 wavelengths = 10**wavelengths
@@ -91,145 +140,83 @@ if wavelengths is not None:
     print("length",len(wavelengths))
     print('---------------')
 
-
-#loop
-
 #flux ext
-t = hdu[1].data
 
-ext = len(t)
+flux_data = hdu[1].data[0]
 
-visits = hdu[0].header['NVISITS']
+if flux_data is not None:
+    print("Flux array:", flux_data)
+    print("length",len(flux_data))
+    print('---------------')
+    
+#tellurics
+    
+tel = hdu[6].data[0]
 
-v=1
+#sky
 
-while v <= visits:
-    
-    #ext_v = math.ceil(ext/2) #fix it
-    
-    if visits == 1:
-        ext_v = 0 # Previous math.ceil(ext/2). Changed to 0 to use the combined spectra with pixel-based weighting since it looks like there are several spectra  that are broken with the global weights
-    else:
-        ext_v = v + 1 # Taking the spectra of each visit, after the combined 2 firsts.
-    
-    
-    flux_data=t[ext_v]
-    
-    if flux_data is not None:
-        print("Flux array:", flux_data)
-        print("length",len(flux_data))
-        print('---------------')
-        
-    #tellurics
-        
-    tellurics=hdu[6].data   
-    
-    tel=tellurics[ext_v]
-    
-    #sky
-    
-    sky=hdu[4].data   
-    
-    sk=sky[ext_v]
-        
-    #downloading apogee table with all infos about the     
-    tab=hdu[9].data
-    
-    #[3] is heliovelocity    
-    vhelio = tab[v-1][3]
-    star = tab[v-1][0]
-    
-    #star, vhelio = read_vhelio_corr(file_path)
-    new_wv, new_fl = corrv(wavelengths,flux_data,vhelio)
-    
-    
+sk = hdu[4].data[0]
+
+vhelio = hdu[0].header['VHELIO']
+star = hdu[0].header['OBJID']
+
+new_wv, new_fl = corrv(wavelengths,flux_data,vhelio)
+
+
 #------------------- plotting ------------------------
 
-    fig, axs = plt.subplots(1, 2, figsize=(15, 5), sharey=True)
+fig, axs = plt.subplots(1, 2, figsize=(15, 5), sharey=True)
 
-    # Remove horizontal space between axes
-    fig.subplots_adjust(wspace=0)
+# Remove horizontal space between axes
+fig.subplots_adjust(wspace=0.1)
 
+axs[0].plot(wavelengths, flux_data, color='gray', linewidth=0.5, label = star)
+axs[0].plot(new_wv, new_fl, color='k')
+#axs[0].plot(wavelengths, tel*np.median(flux_data), color='red',alpha=0.5)
+#axs[0].plot(wavelengths, sk/np.median(sk), color='blue',alpha=0.5)
 
+axs[0].set_ylabel('Flux')
+axs[0].tick_params(which="both", bottom=True, top=True, left=True, right=True, direction='in')
+axs[0].set_xlabel('Wavelength')
 
-    axs[0].plot(wavelengths, flux_data, color='gray', label = star)
-    axs[0].plot(new_wv, new_fl, color='k')
-    axs[0].plot(wavelengths, tel*np.median(flux_data), color='red',alpha=0.5)
-    axs[0].plot(wavelengths, sk/np.median(sk), color='blue',alpha=0.5)
+#axs[0].set_ylim([-1.5,1.5])
+#axs[0].set_xlim([-1.7,0.7])
 
-    axs[0].set_ylabel('Flux')
-    axs[0].tick_params(which="both", bottom=True, top=True, left=True, right=True, direction='in')
-    axs[0].set_xlabel('Wavelength')
+axs[0].grid()
 
-    #axs[0].set_ylim([-1.5,1.5])
-    #axs[0].set_xlim([-1.7,0.7])
+#-----
 
-    axs[0].grid()
+axs[1].title.set_text("Cut")
 
-    #-----
-
-    axs[1].title.set_text("Cutted")
-
-    axs[1].plot(wavelengths, flux_data, color='gray', label = star)
-    axs[1].plot(new_wv, new_fl, color='k',label = 'corrected')
+axs[1].plot(wavelengths, flux_data, color='black', linewidth=0.5, label = star)
+axs[1].plot(new_wv, new_fl, color='k',label = 'corrected')
 
 
-    axs[1].tick_params(which="both", bottom=True, top=True, left=True, right=True, direction='in')
-    axs[1].set_xlabel('Wavelength')
+axs[1].tick_params(which="both", bottom=True, top=True, left=True, right=True, direction='in')
+axs[1].set_xlabel('Wavelength')
 
-    axs[1].set_xlim([16700,16800])
+axs[1].set_xlim([16700,16800])
 
-    axs[1].legend(loc=4)
+axs[1].legend(loc=4)
 
-    axs[1].grid()
+axs[1].grid()
 
-    plt.savefig('figs-spec/flux-'+name_out[:-4]+'_'+str(v)+'.pdf')
+plt.savefig('figs-spec/flux-'+name_out[:-4]+'.pdf')
 
 
 #---------------------------------------------------
 
-    #Saving spectrum
+#Saving spectrum
 
-    print('\nSaving spectrum: ')
-    print(name_out)
+print('\nSaving spectrum: ')
+print(name_out)
 
-    with open('save-spec/'+name_out[:-4]+'_'+str(v)+'.txt', 'w') as f:
-        writer = csv.writer(f)
-        writer.writerows(zip(new_wv, new_fl))
-    
-    v=v+1
+with open('save-spec/'+name_out[:-4]+'.txt', 'w') as f:
+    writer = csv.writer(f)
+    writer.writerows(zip(new_wv, new_fl))
 
 #---------------------------------------------------
-
 
 plt.close()
 hdu.close()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#
