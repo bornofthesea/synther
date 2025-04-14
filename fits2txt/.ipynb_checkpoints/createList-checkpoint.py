@@ -7,13 +7,15 @@ smcdir = '/home/morgan/PhD/Data/spectra/smc/'
 n6558dir = '/home/morgan/PhD/Data/spectra/n6558/'
 n6522dir = '/home/morgan/PhD/Data/spectra/n6522/'
 uks1dir = '/home/morgan/PhD/Data/spectra/uks1/'
+n6723dir = '/home/morgan/PhD/Data/spectra/n6723/'
 """
 hp1list = open(hp1dir + 'hp1.lis', 'r')
 smclist = open(smcdir + 'smc.lis', 'r')
 n6558list = open(n6558dir + '6558.lis', 'r')
 n6522list = open(n6522dir + '6522.lis', 'r')
-"""
 uks1list = open(uks1dir + 'uks1.lis', 'r')
+"""
+n6723list = open(n6723dir + '6723.lis', 'r')
 """
 
 hp1file = open('runhp1.sh', 'w')
@@ -47,7 +49,7 @@ for line in n6522list:
     n6522file.write(myString + '\n')
 
 n6522file.close()
-"""
+
 uks1file = open('runuks1.sh', 'w')
 
 for line in uks1list:
@@ -55,3 +57,11 @@ for line in uks1list:
     uks1file.write(myString + '\n')
 
 uks1file.close()
+"""
+n6723file = open('run6723.sh', 'w')
+
+for line in n6723list:
+    myString = 'python fits2txt.py ' + n6723dir + str(line)
+    n6723file.write(myString + '\n')
+
+n6723file.close()
