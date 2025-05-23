@@ -108,6 +108,8 @@ def corrv(wl,flux,rv):
 
 file_path = sys.argv[1]
 
+folder_name = sys.argv[2]
+
 name_out = str(file_path.split('/')[-1])[:-5] + '.txt'
 
 print('---------------')
@@ -116,14 +118,19 @@ print('Executing for ' + name_out[:-4] + '\n \n')
 
 #making dir to save the output and the fig
 try:
-    os.system('mkdir save-spec')
+    os.system('mkdir ' + sys.argv[2])
 except:
-    print('save-spec already created')
+    print(sys.argv[2] + ' already created')
 
 try:
-    os.system('mkdir figs-spec')
+    os.system('mkdir ' + sys.argv[2] + '/ascii')
 except:
-    print('figs-spec already created')
+    print('ascii already created')
+
+try:
+    os.system('mkdir ' + sys.argv[2] +  '/fig')
+except:
+    print('fig already created')
 
 #---------------
 
@@ -161,7 +168,7 @@ vhelio = hdu[0].header['VHELIO']
 star = hdu[0].header['OBJID']
 
 new_wv, new_fl = corrv(wavelengths,flux_data,vhelio)
-
+new_fl[np.isnan(new_fl)] = 0.0
 
 #------------------- plotting ------------------------
 
@@ -201,7 +208,7 @@ axs[1].legend(loc=4)
 
 axs[1].grid()
 
-plt.savefig('figs-spec/flux-'+name_out[:-4]+'.pdf')
+plt.savefig(sys.argv[2] + '/fig/flux-'  + sys.argv[2] + '_' +name_out[:-4][-5:] +'.pdf')
 
 
 #---------------------------------------------------
@@ -211,9 +218,9 @@ plt.savefig('figs-spec/flux-'+name_out[:-4]+'.pdf')
 print('\nSaving spectrum: ')
 print(name_out)
 
-with open('save-spec/'+name_out[:-4]+'.txt', 'w') as f:
-    writer = csv.writer(f)
-    writer.writerows(zip(new_wv, new_fl))
+with open(sys.argv[2] + '/ascii/'  + sys.argv[2] + '_' + name_out[:-4][-5:] +'.dat', 'w') as f:
+    for wv, fl in zip(new_wv, new_fl):
+        f.write(f"{wv}    {fl}\n")  # Four spaces between values
 
 #---------------------------------------------------
 
