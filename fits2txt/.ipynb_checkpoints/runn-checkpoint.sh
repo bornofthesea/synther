@@ -1,0 +1,1 @@
+python fits2txt.py /home/morgan/Downloads/asStar-dr17-2M04093057-7310108.fits smcnew
