@@ -48,10 +48,10 @@ class Config:
     
     # Plot styling
     LINE_COLORS = {
-        "obs": "red",
-        "CN": "red",
-        "OH": "green",
-        "CO": "purple",
+        "obs": "black",
+        "CN": "indigo",
+        "OH": "limegreen",
+        "CO": "darkorange",
         "default": "blue"
     }
 

@@ -68,9 +68,9 @@ def plot_cno(
 
         # Add molecular markers
         molecules = {
-            'CN': {'lines': Config.LINE_MARKERS['CNO']['CN'], 'color': 'red', 'ymax': 1.03},
-            'OH': {'lines': Config.LINE_MARKERS['CNO']['OH'], 'color': 'green', 'ymax': 1.05},
-            'CO': {'lines': Config.LINE_MARKERS['CNO']['CO'], 'color': 'purple', 'ymax': 1.07}
+            'CN': {'lines': Config.LINE_MARKERS['CNO']['CN'], 'color': Config.LINE_COLORS['CN'], 'ymax': 1.5},
+            'OH': {'lines': Config.LINE_MARKERS['CNO']['OH'], 'color': Config.LINE_COLORS['OH'], 'ymax': 1.5},
+            'CO': {'lines': Config.LINE_MARKERS['CNO']['CO'], 'color': Config.LINE_COLORS['CO'], 'ymax': 1.5}
         }
         
         for mol, props in molecules.items():
@@ -89,7 +89,7 @@ def plot_cno(
                     if line in [15528.063, 15535.46, 15572.1]:  # Example key lines
                         ax.text(
                             x=line, 
-                            y=props['ymax']+0.01,
+                            y=1.05,
                             s=mol,
                             color=props['color'],
                             ha='center',
