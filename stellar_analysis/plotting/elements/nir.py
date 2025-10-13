@@ -57,7 +57,7 @@ def plot_nir(
     ), 1):
         ax.plot(
             obs_data["Wavelength"] + params[f"xoffset{i}"],
-            (obs_data["Flux"]/norm[i-1])/params[f"ncorr{i}"] + params[f"yoffset{i}"],
+            (obs_data["Flux"]/norm[i-1])/params[f"ncorr{i}"] + params[f"yoffset{i}"], '--',                 linewidth = 0.7,
             color=Config.LINE_COLORS["obs"],
             label="Observed"
         )

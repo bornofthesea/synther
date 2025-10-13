@@ -57,7 +57,8 @@ def plot_cno(
     ), 1):
         ax.plot(
             obs_data["Wavelength"] + params[f"xoffset{i}"],
-            (obs_data["Flux"]/norm[i-1])/params[f"ncorr{i}"] + params[f"yoffset{i}"],
+            (obs_data["Flux"]/norm[i-1])/params[f"ncorr{i}"] + params[f"yoffset{i}"], '--',
+            linewidth = 1,
             color=Config.LINE_COLORS["obs"],
             label="Observed"
         )
@@ -68,28 +69,28 @@ def plot_cno(
 
         # Add molecular markers
         molecules = {
-            'CN': {'lines': Config.LINE_MARKERS['CNO']['CN'], 'color': Config.LINE_COLORS['CN'], 'ymax': 1.5},
-            'OH': {'lines': Config.LINE_MARKERS['CNO']['OH'], 'color': Config.LINE_COLORS['OH'], 'ymax': 1.5},
-            'CO': {'lines': Config.LINE_MARKERS['CNO']['CO'], 'color': Config.LINE_COLORS['CO'], 'ymax': 1.5}
+            'CN': {'lines': Config.LINE_MARKERS['CNO']['CN'], 'color': Config.LINE_COLORS['CN']},
+            'OH': {'lines': Config.LINE_MARKERS['CNO']['OH'], 'color': Config.LINE_COLORS['OH']},
+            'CO': {'lines': Config.LINE_MARKERS['CNO']['CO'], 'color': Config.LINE_COLORS['CO']}
         }
         
         for mol, props in molecules.items():
             for line in props['lines']:
                 if xlim[0] <= line <= xlim[1]:
-                    ax.vlines(
+                    ax.axvline(
                         x=line, 
-                        ymin=0.95, 
-                        ymax=props['ymax'],
+                        ymin=0.10, ymax=0.25, 
                         color=props['color'],
-                        linestyle='--', 
-                        alpha=0.7,
-                        linewidth=1.0
+                        linestyle='-',
+                        linewidth=1.3,
+                        alpha=0.7
                     )
+                    
                     # Add text label for major lines
                     if line in [15528.063, 15535.46, 15572.1]:  # Example key lines
                         ax.text(
                             x=line, 
-                            y=1.05,
+                            y=ylim[1],
                             s=mol,
                             color=props['color'],
                             ha='center',
@@ -101,13 +102,16 @@ def plot_cno(
         ax.set_ylim(*ylim)
         setxTicks(ax)
         ax.grid(True, alpha=0.3)
+        
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(
         handles, labels,
         loc='upper center',
-        bbox_to_anchor=(0.5, 1.02),  # Right below title
+        bbox_to_anchor=(0.5, 0.98),  # Right below title
         ncol=len(labels),             # Horizontal layout
-        frameon=False,
+        frameon=True,
+        fancybox=True,
+        shadow=False,
         fontsize=9
     )
     #axes[0].legend(loc="upper right")
