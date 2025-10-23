@@ -13,7 +13,8 @@ class Config:
         'K': (10, 5),      # Potassium (1 panel)
         'S': (12, 6),      # Sulfur (2 panels)
         'CNO': (14, 12),    # CNO (3 panels)
-        'nir': (14, 12)    # all (3 panels)
+        'nir': (14, 12),    # all (3 panels)
+        'Ce': (16, 10)
     }
     
     # Default plotting parameters
@@ -22,7 +23,9 @@ class Config:
         'K': [(15160, 15170)],
         'S': [(15465, 15473), (15472, 15482)],
         'CNO': [(15520, 15555), (15555, 15575), (15575, 15590)],
-        'nir': [(15100, 15600), (15600, 16600), (15500, 15600)]
+        'nir': [(15100, 15600), (15600, 16600), (15500, 15600)],
+        'Ce': [(15768, 15790), (15953, 15963), (16322, 16332), 
+               (16369, 16382), (16590, 16600), (16717, 16725)]
     }
     
     DEFAULT_YLIM: Tuple[float, float] = (0.75, 1.05)
@@ -31,7 +34,10 @@ class Config:
     DEFAULT_OFFSETS: Dict[str, float] = {
         'xoffset1': 0, 'yoffset1': 0, 'ncorr1': 1,
         'xoffset2': 0, 'yoffset2': 0, 'ncorr2': 1,
-        'xoffset3': 0, 'yoffset3': 0, 'ncorr3': 1
+        'xoffset3': 0, 'yoffset3': 0, 'ncorr3': 1,
+        'xoffset4': 0, 'yoffset4': 0, 'ncorr4': 1,
+        'xoffset5': 0, 'yoffset5': 0, 'ncorr5': 1,
+        'xoffset6': 0, 'yoffset6': 0, 'ncorr6': 1
     }
     
     # Line markers
@@ -43,15 +49,22 @@ class Config:
             "CN": [15528.063, 15528.734, 15529.9, 15530.8, 15534.4, 15540.23, 15541.40, 15542.20, 15542.20, 15542.90, 15544.5, 15550.45, 15550.9, 15552.6, 15553.5, 15554.5, 15555.435, 15557.9, 15558.7, 155561.4, 15562.2, 15563.4, 15573.2, 15579.8, 15580.2, 15581.0],
             "OH": [15535.46, 15536.7, 15560.24, 15565.91, 15568.78],
             "CO": [15572.1, 15577.6, 15577.4, 15578.4, 155578.8, 155579.3, 15579.8, 15581.8, 15582.6, 15583.5, 15584.4, 15586.4, 15586.716, 155586.4]
+        },
+        'Ce': {
+            "CeII": [15784.750, 15958.400, 16327.320, 16376.480, 16595.180, 16722.510]
         }
     }
     
     # Plot styling
     LINE_COLORS = {
         "obs": "black",
-        "CN": "indigo",
+        "CN": "dodgerblue",
         "OH": "limegreen",
-        "CO": "darkorange",
+        "CO": "firebrick",
+        "PI": "teal",    
+        "SI": "limegreen",
+        "KI": "darkred",
+        "CeII": "firebrick",
         "default": "blue"
     }
 

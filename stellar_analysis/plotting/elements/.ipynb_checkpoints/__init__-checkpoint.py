@@ -3,10 +3,13 @@ from .potassium import plot_potassium
 from .sulfur import plot_sulfur
 from .cno import plot_cno
 from .nir import plot_nir
+from .cerium import plot_ce
+
 __all__ = [
     'plot_phosphorus',
     'plot_potassium',
     'plot_sulfur',
     'plot_cno',
-    'plot_nir'
+    'plot_nir',
+    'plot_ce'
 ]

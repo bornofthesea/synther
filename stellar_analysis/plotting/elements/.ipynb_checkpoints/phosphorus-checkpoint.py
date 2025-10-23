@@ -48,17 +48,36 @@ def plot_phosphorus(
     ), 1):
         ax.plot(
             obs_data["Wavelength"] + params[f"xoffset{i}"],
-            (obs_data["Flux"]/norm[i-1])/params[f"ncorr{i}"] + params[f"yoffset{i}"],
+            (obs_data["Flux"]/norm[i-1])/params[f"ncorr{i}"] + params[f"yoffset{i}"], '--',                 linewidth = 0.7,
             color=Config.LINE_COLORS["obs"],
             label="Observed"
         )
         
         for data, label in zip(syn_data, labels):
             ax.plot(data["Wavelength"], data["Flux"], label=label)
-            
-        for line in Config.LINE_MARKERS["P"]["PI"]:
-            ax.axvline(x=line, ymin=0.95, ymax=1.0, 
-                      color="purple", linestyle="--", alpha=0.7)
+
+
+        for line in Config.LINE_MARKERS['P']['PI']:
+            if xlim[0] <= line <= xlim[1]:
+                ax.axvline(
+                    x=line,
+                    ymin=0.10, ymax=0.25,
+                    linestyle='-',
+                    linewidth=1.3,
+                    alpha=0.7
+                )
+                # Add wavelength label
+                ax.text(
+                    x=0.01,
+                    y=0.01,
+                    s=f'PI - {line}',
+                    ha='left',
+                    va='bottom',
+                    fontsize=10,
+                    transform=ax.transAxes
+                )
+        
+
             
         ax.set_xlim(*xlim)
         ax.set_ylim(*ylim)

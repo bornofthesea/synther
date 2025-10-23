@@ -31,32 +31,52 @@ def plot_potassium(
     # Single panel plot
     figsize = figsize or Config.DEFAULT_FIGSIZE['K']
     fig, ax = plt.subplots(figsize=figsize, tight_layout=True)
-    ax.set_title(f"Potassium Features - {starname}", pad=20)  # Add padding
-
+    
+    ax.set_title(f"Potassium Features - {starname}", y=1.07)  # Add padding
+    #fig.subplots_adjust(top=0.75)
 
     ax.plot(
         obs_data["Wavelength"] + params["xoffset1"],
-        (obs_data["Flux"]/norm)/params["ncorr1"] + params["yoffset1"],
+        (obs_data["Flux"]/norm)/params["ncorr1"] + params["yoffset1"], '--',
+        linewidth = 0.7,
         color=Config.LINE_COLORS["obs"],
         label="Observed"
     )
-    
+    fig.subplots_adjust(top=0.60)
     for data, label in zip(syn_data, labels):
         ax.plot(data["Wavelength"], data["Flux"], label=label)
-        
-    for line in Config.LINE_MARKERS["K"]["KI"]:
-        ax.axvline(x=line, ymin=0.95, ymax=1.0, 
-                  color="orange", linestyle="--", alpha=0.7)
+
+    # KI lines with labels
+    for num, line in enumerate(Config.LINE_MARKERS['K']['KI']):
+        ax.axvline(
+            x=line,
+            ymin=0.10, ymax=0.25,
+            linestyle='-',
+            linewidth=1.3,
+            alpha=0.7
+        )
+        # Add wavelength label
+        ax.text(
+            x=0.01,
+            y=0.01 + num*0.04,
+            s=f'KI - {line}',
+            ha='left',
+            va='bottom',
+            fontsize=10,
+            transform=ax.transAxes
+        )
         
     ax.set_xlim(*params["xlim1"])
     ax.set_ylim(*params["ylim1"])
     setxTicks(ax)
     ax.grid(True, alpha=0.3)
     ax.legend(
-        loc='upper center',          # Center above plot
-        bbox_to_anchor=(0.5, 1.15), # (horizontal, vertical) position
+        loc='upper center',         # Center above plot
+        bbox_to_anchor=(0.5, 1.07), # (horizontal, vertical) position
         ncol=3,                     # Number of columns
-        frameon=False,              # Clean look
+        frameon=True,               # Clean look
+        fancybox=True,
+        shadow=False,
         fontsize=10
     )
     ax.set_xlabel("Wavelength (Å)")
