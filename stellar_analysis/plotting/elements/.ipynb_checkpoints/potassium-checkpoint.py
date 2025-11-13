@@ -36,7 +36,7 @@ def plot_potassium(
     #fig.subplots_adjust(top=0.75)
 
     ax.plot(
-        obs_data["Wavelength"] + params["xoffset1"],
+        obs_data["Wavelength"] + (params[f"rvoffset"]/299792.458 * obs_data["Wavelength"]),
         (obs_data["Flux"]/norm)/params["ncorr1"] + params["yoffset1"], '--',
         linewidth = 0.7,
         color=Config.LINE_COLORS["obs"],

@@ -82,7 +82,7 @@ def plot_ce(
          params["ylim4"], params["ylim5"], params["ylim6"]]
     ), 1):
         ax.plot(
-            obs_data["Wavelength"] + params[f"xoffset{i}"],
+            obs_data["Wavelength"] + (params[f"rvoffset"]/299792.458 * obs_data["Wavelength"]),
             (obs_data["Flux"]/norm[i-1])/params[f"ncorr{i}"] + params[f"yoffset{i}"], '--',                linewidth = 0.7,
             color=Config.LINE_COLORS["obs"],
             label="Observed"

@@ -12,5 +12,5 @@ def save_figure(fig, starname: str, element: str) -> Path:
     """Save figure to output directory with standardized naming."""
     Config.setup_directories()
     filename = Config.OUTPUT_DIR / f"{starname}_{element.lower()}.png"
-    fig.savefig(filename, dpi=300, bbox_inches='tight')
+    fig.savefig(filename, dpi=100, bbox_inches='tight')
     return filename
