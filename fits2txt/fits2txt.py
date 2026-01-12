@@ -110,9 +110,8 @@ def corrv(wl,flux,rv):
 
 
 file_path = sys.argv[1]
-
-#folder_name = sys.argv[2]
-folder_name = "smc"
+folder_name = sys.argv[2]
+#folder_name = "smc"
 
 name_out = str(file_path.split('/')[-1])[:-5]
 

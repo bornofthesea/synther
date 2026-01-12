@@ -32,12 +32,12 @@ class Config:
     
     # Add this new section for offsets
     DEFAULT_OFFSETS: Dict[str, float] = {
-        'xoffset1': 0, 'yoffset1': 0, 'ncorr1': 1,
-        'xoffset2': 0, 'yoffset2': 0, 'ncorr2': 1,
-        'xoffset3': 0, 'yoffset3': 0, 'ncorr3': 1,
-        'xoffset4': 0, 'yoffset4': 0, 'ncorr4': 1,
-        'xoffset5': 0, 'yoffset5': 0, 'ncorr5': 1,
-        'xoffset6': 0, 'yoffset6': 0, 'ncorr6': 1,
+        'yoffset1': 0, 'ncorr1': 1,
+        'yoffset2': 0, 'ncorr2': 1,
+        'yoffset3': 0, 'ncorr3': 1,
+        'yoffset4': 0, 'ncorr4': 1,
+        'yoffset5': 0, 'ncorr5': 1,
+        'yoffset6': 0, 'ncorr6': 1,
         'rvoffset': 0
     }
     
@@ -51,8 +51,7 @@ class Config:
             "OH": [15535.46, 15536.7, 15560.24, 15565.91, 15568.78],
             "CO": [15572.1, 15577.6, 15577.4, 15578.4, 155578.8, 155579.3, 15579.8, 15581.8, 15582.6, 15583.5, 15584.4, 15586.4, 15586.716, 155586.4]
         },
-        'Ce': {
-            "CeII": [15784.750, 15958.400, 16327.320, 16376.480, 16595.180, 16722.510]
+        'Ce': {"CeII": [15784.750, 15958.400, 16327.320, 16376.480, 16595.180, 16722.510]
         }
     }
     
