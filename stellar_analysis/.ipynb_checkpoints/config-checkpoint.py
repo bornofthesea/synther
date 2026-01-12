@@ -3,7 +3,7 @@ from typing import Dict, List, Tuple
 
 class Config:
     # Directory paths
-    BASE_DIR = Path.home() / "stellar_analysis"
+    BASE_DIR = Path("/home/morgan/PhD/Scripts/synther")
     SYNT_DIR = Path("/home/morgan/Turbospectrum2019/COM-v19.1/syntspec/")
     APOG_DIR = Path("/home/morgan/PhD/Data/apogee/")
     OUTPUT_DIR = BASE_DIR / "plots"
@@ -37,7 +37,8 @@ class Config:
         'xoffset3': 0, 'yoffset3': 0, 'ncorr3': 1,
         'xoffset4': 0, 'yoffset4': 0, 'ncorr4': 1,
         'xoffset5': 0, 'yoffset5': 0, 'ncorr5': 1,
-        'xoffset6': 0, 'yoffset6': 0, 'ncorr6': 1
+        'xoffset6': 0, 'yoffset6': 0, 'ncorr6': 1,
+        'wloffset': 0
     }
     
     # Line markers

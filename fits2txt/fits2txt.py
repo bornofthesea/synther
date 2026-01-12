@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+
+#Removed RV correction
 """
 Created on Wed Jun  5 10:59:07 2024
 
@@ -107,10 +110,10 @@ def corrv(wl,flux,rv):
 
 
 file_path = sys.argv[1]
-
 folder_name = sys.argv[2]
+#folder_name = "smc"
 
-name_out = str(file_path.split('/')[-1])[:-5] + '.txt'
+name_out = str(file_path.split('/')[-1])[:-5]
 
 print('---------------')
 print('Executing for ' + name_out[:-4] + '\n \n')
@@ -118,17 +121,17 @@ print('Executing for ' + name_out[:-4] + '\n \n')
 
 #making dir to save the output and the fig
 try:
-    os.system('mkdir ' + sys.argv[2])
+    os.system('mkdir ' + folder_name)
 except:
-    print(sys.argv[2] + ' already created')
+    print(folder_name + ' already created')
 
 try:
-    os.system('mkdir ' + sys.argv[2] + '/ascii')
+    os.system('mkdir ' + folder_name + '/ascii')
 except:
     print('ascii already created')
 
 try:
-    os.system('mkdir ' + sys.argv[2] +  '/fig')
+    os.system('mkdir ' + folder_name +  '/fig')
 except:
     print('fig already created')
 
@@ -164,7 +167,8 @@ tel = hdu[6].data[0]
 
 sk = hdu[4].data[0]
 
-vhelio = hdu[0].header['VHELIO']
+#vhelio = hdu[0].header['VHELIO']
+vhelio = 0
 star = hdu[0].header['OBJID']
 
 new_wv, new_fl = corrv(wavelengths,flux_data,vhelio)
@@ -178,7 +182,7 @@ fig, axs = plt.subplots(1, 2, figsize=(15, 5), sharey=True)
 fig.subplots_adjust(wspace=0.1)
 
 axs[0].plot(wavelengths, flux_data, color='gray', linewidth=0.5, label = star)
-axs[0].plot(new_wv, new_fl, color='k')
+#axs[0].plot(new_wv, new_fl, color='k')
 #axs[0].plot(wavelengths, tel*np.median(flux_data), color='red',alpha=0.5)
 #axs[0].plot(wavelengths, sk/np.median(sk), color='blue',alpha=0.5)
 
@@ -196,7 +200,7 @@ axs[0].grid()
 axs[1].title.set_text("Cut")
 
 axs[1].plot(wavelengths, flux_data, color='black', linewidth=0.5, label = star)
-axs[1].plot(new_wv, new_fl, color='k',label = 'corrected')
+#axs[1].plot(new_wv, new_fl, color='k',label = 'corrected')
 
 
 axs[1].tick_params(which="both", bottom=True, top=True, left=True, right=True, direction='in')
@@ -208,7 +212,7 @@ axs[1].legend(loc=4)
 
 axs[1].grid()
 
-plt.savefig(sys.argv[2] + '/fig/flux-'  + sys.argv[2] + '_' +name_out[:-4][-5:] +'.pdf')
+plt.savefig(folder_name + '/fig/flux-' + name_out +'.pdf')
 
 
 #---------------------------------------------------
@@ -218,7 +222,9 @@ plt.savefig(sys.argv[2] + '/fig/flux-'  + sys.argv[2] + '_' +name_out[:-4][-5:] 
 print('\nSaving spectrum: ')
 print(name_out)
 
-with open(sys.argv[2] + '/ascii/'  + sys.argv[2] + '_' + name_out[:-4][-5:] +'.dat', 'w') as f:
+
+
+with open(folder_name + '/ascii/' + name_out +'.dat', 'w') as f:
     for wv, fl in zip(new_wv, new_fl):
         f.write(f"{wv}    {fl}\n")  # Four spaces between values
 

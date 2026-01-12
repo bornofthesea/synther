@@ -16,6 +16,7 @@ def createlist(listfiledir, listfilename):
     runfile.close()
 
 
-createlist('hp1', 'hp1')
-createlist('Ton2', 'ton2')
-createlist('n6380', 'n6380')
+#createlist('hp1', 'hp1')
+#createlist('Ton2', 'ton2')
+#createlist('n6380', 'n6380')
+createlist('smc_new', 'smc_new')
